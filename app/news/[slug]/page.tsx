@@ -1,17 +1,14 @@
 import { DUMMY_NEWS } from "@/dummy-news";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type NewsDetailPageProps = {
   params: { slug: string };
 };
 
-export default function NewsDetailPage({ params }: NewsDetailPageProps) {
-  const { slug } = params;
+export default async function NewsDetailPage({ params }: NewsDetailPageProps) {
+  const { slug } = await params;
   const newsItem = DUMMY_NEWS.find((newsItem) => newsItem.slug === slug);
-
-  console.log(params);
-  console.log(slug);
-  console.log(newsItem);
 
   if (!newsItem) {
     notFound();
@@ -20,7 +17,9 @@ export default function NewsDetailPage({ params }: NewsDetailPageProps) {
   return (
     <article className="news-article">
       <header>
-        <img src={`/images/news/${newsItem?.image}`} alt={newsItem.title} />
+        <Link href={`/news/${newsItem.slug}/image`}>
+          <img src={`/images/news/${newsItem?.image}`} alt={newsItem.title} />
+        </Link>
         <h1>{newsItem.title}</h1>
         <time dateTime={newsItem.date}>{newsItem.date}</time>
       </header>
